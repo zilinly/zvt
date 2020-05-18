@@ -278,6 +278,8 @@ if __name__ == '__main__':
     data_reader2 = DataReader(codes=['002223'], data_schema=Stock1dMaStateStats, entity_schema=Stock,
                               columns=['ma5', 'ma10', 'current_count', 'current_pct'])
 
+    data_reader2.data_df['slope'] = 100 * data_reader2.data_df['current_pct'] / data_reader2.data_df['current_count']
+
     drawer = Drawer(main_df=data_reader1.data_df, factor_df=data_reader2.data_df[['ma5', 'ma10']],
-                    sub_df=data_reader2.data_df[['current_pct']])
+                    sub_df=data_reader2.data_df[['slope']])
     drawer.draw_kline()

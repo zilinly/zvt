@@ -4,13 +4,13 @@ from typing import List, Union
 
 import pandas as pd
 
-from zvt.core import IntervalLevel, EntityMixin
-from zvt.utils.pd_utils import pd_is_not_null
 from zvt.api import get_entities, Stock
 from zvt.api.common import get_ma_state_stats_schema
+from zvt.core import IntervalLevel, EntityMixin
 from zvt.factors.algorithm import MaTransformer
 from zvt.factors.factor import Accumulator, Transformer
 from zvt.factors.technical_factor import TechnicalFactor
+from zvt.utils.pd_utils import pd_is_not_null
 
 
 # 均线状态统计
@@ -150,6 +150,22 @@ class MaStateStatsFactor(TechnicalFactor):
                          start_timestamp, end_timestamp, columns, filters, order, limit, level, category_field,
                          time_field, computing_window, keep_all_timestamp, fill_method, effective_number, transformer,
                          accumulator, persist_factor, dry_run)
+
+
+def show_slope(codes):
+    factor = MaStateStatsFactor(codes=codes, start_timestamp='2005-01-01',
+                                end_timestamp='2020-04-01', persist_factor=False,
+                                level='1d')
+    df = factor.factor_df.copy()
+    slope = 100 * df.current_pct / df.current_count
+    import plotly.express as px
+    import plotly.io as pio
+    pio.renderers.default = "browser"
+
+    slope = slope.to_frame(name='x')
+
+    fig = px.histogram(slope, x='x')
+    fig.show()
 
 
 if __name__ == '__main__':
