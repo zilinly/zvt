@@ -74,11 +74,13 @@ def report_state():
                 for entity_id, df in ma_state.factor_df.groupby(level=0):
                     if df['current_pct'].max() >= 0.6:
                         bad_stocks.append(entity_id)
-                        long_stocks.remove(entity_id)
+                        if entity_id in long_stocks:
+                            long_stocks.remove(entity_id)
 
                     if df['slope'].iat[-1] > 4:
                         rushing_stocks.append(entity_id)
-                        long_stocks.remove(entity_id)
+                        if entity_id in long_stocks:
+                            long_stocks.remove(entity_id)
 
                 if bad_stocks:
                     stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=bad_stocks,
