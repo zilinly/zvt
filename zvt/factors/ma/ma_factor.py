@@ -130,8 +130,8 @@ class ImprovedMaFactor(TechnicalFactor):
         # 放量
         vol_cols = [f'vol_ma{window}' for window in self.vol_windows]
 
-        filter_se = filter_se & (self.factor_df['volume'] > 2 * self.factor_df[vol_cols[1]])
-        filter_se = filter_se & (self.factor_df[vol_cols[0]] > 1.5 * self.factor_df[vol_cols[1]])
+        filter_se = filter_se & (self.factor_df['volume'] > 1.3 * self.factor_df[vol_cols[1]])
+        filter_se = filter_se & (self.factor_df[vol_cols[0]] > 1.4 * self.factor_df[vol_cols[1]])
 
         print(self.factor_df[filter_se])
         self.result_df = filter_se.to_frame(name='score')
