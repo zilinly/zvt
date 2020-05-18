@@ -7,11 +7,11 @@ import eastmoneypy
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from examples.reports import risky_company
-from zvt.core.api import get_entities, get_entity_code
 from zvt import init_log
+from zvt.core.api import get_entities, get_entity_code
 from zvt.domain import Stock1dKdata, StockValuation, Stock
 from zvt.factors import TargetSelector
-from zvt.factors.ma.ma_factor import VolumeUpMa250Factor
+from zvt.factors.ma.ma_factor import ImprovedMaFactor
 from zvt.factors.ma.ma_stats import MaStateStatsFactor
 from zvt.informer.informer import EmailInformer
 
@@ -35,7 +35,7 @@ def report_state():
             # 计算均线
             my_selector = TargetSelector(start_timestamp='2018-01-01', end_timestamp=target_date)
             # add the factors
-            factor1 = VolumeUpMa250Factor(start_timestamp='2018-01-01', end_timestamp=target_date)
+            factor1 = ImprovedMaFactor(start_timestamp='2018-01-01', end_timestamp=target_date)
 
             my_selector.add_filter_factor(factor1)
 
@@ -65,16 +65,32 @@ def report_state():
                 pre_date = target_date - datetime.timedelta(3 * 365)
                 ma_state = MaStateStatsFactor(entity_ids=long_stocks, start_timestamp=pre_date,
                                               end_timestamp=target_date, persist_factor=False)
+
+                ma_state.factor_df['slope'] = 100 * ma_state.factor_df['current_pct'] / ma_state.factor_df[
+                    'current_count']
+
                 bad_stocks = []
+                rushing_stocks = []
                 for entity_id, df in ma_state.factor_df.groupby(level=0):
-                    if df['current_pct'].max() >= 0.35:
+                    if df['current_pct'].max() >= 0.6:
                         bad_stocks.append(entity_id)
                         long_stocks.remove(entity_id)
+
+                    if df['slope'].iat[-1] > 4:
+                        rushing_stocks.append(entity_id)
+                        long_stocks.remove(entity_id)
+
                 if bad_stocks:
                     stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=bad_stocks,
                                           return_type='domain')
                     info = [f'{stock.name}({stock.code})' for stock in stocks]
                     msg = msg + '3年内高潮过:' + ' '.join(info) + '\n'
+
+                if rushing_stocks:
+                    stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=rushing_stocks,
+                                          return_type='domain')
+                    info = [f'{stock.name}({stock.code})' for stock in stocks]
+                    msg = msg + '已快速拉升:' + ' '.join(info) + '\n'
 
             # 过滤风险股
             if long_stocks:
