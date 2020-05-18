@@ -9,7 +9,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from examples.reports import risky_company
 from zvt import init_log
 from zvt.core.api import get_entities, get_entity_code
-from zvt.domain import Stock1dKdata, StockValuation, Stock
+from zvt.domain import Stock1dKdata, Stock
 from zvt.factors import TargetSelector
 from zvt.factors.ma.ma_factor import ImprovedMaFactor
 from zvt.factors.ma.ma_stats import MaStateStatsFactor
@@ -43,26 +43,12 @@ def report_state():
 
             long_stocks = my_selector.get_open_long_targets(timestamp=target_date)
 
-            msg = 'no targets'
-            # 过滤亏损股
-            # check StockValuation data
-            pe_date = target_date - datetime.timedelta(10)
-            if StockValuation.query_data(start_timestamp=pe_date, limit=1, return_type='domain'):
-                positive_df = StockValuation.query_data(provider='joinquant', entity_ids=long_stocks,
-                                                        start_timestamp=pe_date,
-                                                        filters=[StockValuation.pe > 0],
-                                                        columns=['entity_id'])
-                bad_stocks = set(long_stocks) - set(positive_df['entity_id'].tolist())
-                if bad_stocks:
-                    stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=bad_stocks,
-                                          return_type='domain')
-                    info = [f'{stock.name}({stock.code})' for stock in stocks]
-                    msg = '亏损股:' + ' '.join(info) + '\n'
+            logger.info(long_stocks)
 
-                long_stocks = set(positive_df['entity_id'].tolist())
+            msg = 'no targets'
 
             if long_stocks:
-                pre_date = target_date - datetime.timedelta(3 * 365)
+                pre_date = target_date - datetime.timedelta(2 * 365)
                 ma_state = MaStateStatsFactor(entity_ids=long_stocks, start_timestamp=pre_date,
                                               end_timestamp=target_date, persist_factor=False)
 
@@ -72,12 +58,12 @@ def report_state():
                 bad_stocks = []
                 rushing_stocks = []
                 for entity_id, df in ma_state.factor_df.groupby(level=0):
-                    if df['current_pct'].max() >= 0.6:
+                    if df['current_pct'].max() >= 0.7:
                         bad_stocks.append(entity_id)
                         if entity_id in long_stocks:
                             long_stocks.remove(entity_id)
 
-                    if df['slope'].iat[-1] > 4:
+                    if df['slope'].iat[-1] > 5:
                         rushing_stocks.append(entity_id)
                         if entity_id in long_stocks:
                             long_stocks.remove(entity_id)
@@ -102,7 +88,7 @@ def report_state():
                     long_stocks = [entity_id for entity_id in long_stocks if
                                    get_entity_code(entity_id) not in risky_codes]
 
-                    stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=risky_codes,
+                    stocks = get_entities(provider='joinquant', entity_schema=Stock, codes=risky_codes,
                                           return_type='domain')
                     info = [f'{stock.name}({stock.code})' for stock in stocks]
                     msg = msg + '风险股:' + ' '.join(info) + '\n'
