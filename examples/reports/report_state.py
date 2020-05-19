@@ -61,12 +61,12 @@ def report_state():
                     if df['current_pct'].max() >= 0.7:
                         high_stocks.append(entity_id)
 
-                    stock_map_slope[entity_id] = df['slope'].iat[-1]
+                    stock_map_slope[entity_id] = round(df['slope'].iat[-1], 2)
 
                 if high_stocks:
                     stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=high_stocks,
                                           return_type='domain')
-                    info = [f'{stock.name}({stock.code})' for stock in stocks]
+                    info = [f'{stock.name}({stock.code})[{stock_map_slope.get(stock.entity_id)}]' for stock in stocks]
                     msg = msg + '2年内高潮过:' + ' '.join(info) + '\n'
 
             # 过滤风险股
@@ -80,7 +80,7 @@ def report_state():
 
                     stocks = get_entities(provider='joinquant', entity_schema=Stock, codes=risky_codes,
                                           return_type='domain')
-                    info = [f'{stock.name}({stock.code})' for stock in stocks]
+                    info = [f'{stock.name}({stock.code})[{stock_map_slope.get(stock.entity_id)}]' for stock in stocks]
                     msg = msg + '风险股:' + ' '.join(info) + '\n'
             if long_stocks:
                 stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=long_stocks,
