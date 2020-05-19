@@ -42,6 +42,7 @@ def report_state():
             my_selector.run()
 
             long_stocks = my_selector.get_open_long_targets(timestamp=target_date)
+            stock_map_slope = {}
 
             logger.info(long_stocks)
 
@@ -55,34 +56,23 @@ def report_state():
                 ma_state.factor_df['slope'] = 100 * ma_state.factor_df['current_pct'] / ma_state.factor_df[
                     'current_count']
 
-                bad_stocks = []
-                rushing_stocks = []
+                high_stocks = []
                 for entity_id, df in ma_state.factor_df.groupby(level=0):
                     if df['current_pct'].max() >= 0.7:
-                        bad_stocks.append(entity_id)
-                        if entity_id in long_stocks:
-                            long_stocks.remove(entity_id)
+                        high_stocks.append(entity_id)
 
-                    if df['slope'].iat[-1] > 5:
-                        rushing_stocks.append(entity_id)
-                        if entity_id in long_stocks:
-                            long_stocks.remove(entity_id)
+                    stock_map_slope[entity_id] = df['slope'].iat[-1]
 
-                if bad_stocks:
-                    stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=bad_stocks,
+                if high_stocks:
+                    stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=high_stocks,
                                           return_type='domain')
                     info = [f'{stock.name}({stock.code})' for stock in stocks]
-                    msg = msg + '3年内高潮过:' + ' '.join(info) + '\n'
-
-                if rushing_stocks:
-                    stocks = get_entities(provider='joinquant', entity_schema=Stock, entity_ids=rushing_stocks,
-                                          return_type='domain')
-                    info = [f'{stock.name}({stock.code})' for stock in stocks]
-                    msg = msg + '已快速拉升:' + ' '.join(info) + '\n'
+                    msg = msg + '2年内高潮过:' + ' '.join(info) + '\n'
 
             # 过滤风险股
             if long_stocks:
-                risky_codes = risky_company(the_date=target_date, entity_ids=long_stocks)
+                risky_codes = risky_company(the_date=target_date, entity_ids=long_stocks, income_yoy=-0.8,
+                                            profit_yoy=-0.8)
 
                 if risky_codes:
                     long_stocks = [entity_id for entity_id in long_stocks if
@@ -108,8 +98,8 @@ def report_state():
                     email_action.send_message("5533061@qq.com", f'report state error',
                                               'report state error:{}'.format(e))
 
-                info = [f'{stock.name}({stock.code})' for stock in stocks]
-                msg = msg + '盈利股:' + ' '.join(info) + '\n'
+                info = [f'{stock.name}({stock.code})[{stock_map_slope.get(stock.entity_id)}]' for stock in stocks]
+                msg = msg + '选中:' + ' '.join(info) + '\n'
 
             logger.info(msg)
             email_action.send_message('5533061@qq.com', f'{target_date} 放量突破年线state选股结果', msg)
