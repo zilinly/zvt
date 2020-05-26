@@ -180,34 +180,34 @@ class Drawer(object):
                                  fixedrange=False,
                                  zeroline=False)
 
-        if need_range_selector and len(self.main_data.data_df) > 500:
-            layout.xaxis = dict(
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=1,
-                             label='1m',
-                             step='month',
-                             stepmode='backward'),
-                        dict(count=6,
-                             label='6m',
-                             step='month',
-                             stepmode='backward'),
-                        dict(count=1,
-                             label='YTD',
-                             step='year',
-                             stepmode='todate'),
-                        dict(count=1,
-                             label='1y',
-                             step='year',
-                             stepmode='backward'),
-                        dict(step='all')
-                    ])
-                ),
-                rangeslider=dict(
-                    visible=False,
-                ),
-                type='date'
-            )
+        # if need_range_selector and len(self.main_data.data_df) > 500:
+            # layout.xaxis = dict(
+            #     rangeselector=dict(
+            #         buttons=list([
+            #             dict(count=1,
+            #                  label='1m',
+            #                  step='month',
+            #                  stepmode='backward'),
+            #             dict(count=6,
+            #                  label='6m',
+            #                  step='month',
+            #                  stepmode='backward'),
+            #             dict(count=1,
+            #                  label='YTD',
+            #                  step='year',
+            #                  stepmode='todate'),
+            #             dict(count=1,
+            #                  label='1y',
+            #                  step='year',
+            #                  stepmode='backward'),
+            #             dict(step='all')
+            #         ])
+            #     ),
+            #     rangeslider=dict(
+            #         visible=False,
+            #     ),
+            #     type='date'
+            # )
 
             # 没有子图，显示rangeslider
             # if not subplot:
