@@ -6,8 +6,8 @@ from logging.handlers import RotatingFileHandler
 
 import pandas as pd
 
-from zvt.utils.zip_utils import unzip
 from zvt.settings import DATA_SAMPLE_ZIP_PATH, ZVT_TEST_HOME, ZVT_HOME, ZVT_TEST_DATA_PATH, ZVT_TEST_ZIP_DATA_PATH
+from zvt.utils.zip_utils import unzip
 
 
 def init_log(file_name='zvt.log', log_dir=None, simple_formatter=True):
@@ -117,5 +117,10 @@ else:
 
 import zvt.domain as domain
 import zvt.recorders as recorders
+
+import pluggy
+
+hookimpl = pluggy.HookimplMarker("zvt")
+"""Marker to be imported and used in plugins (and for own implementations)"""
 
 __all__ = ['domain', 'recorders', 'zvt_env', 'init_log', 'init_env']

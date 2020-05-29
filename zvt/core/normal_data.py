@@ -45,3 +45,6 @@ class NormalData(object):
 
     def empty(self):
         return not pd_is_not_null(self.data_df)
+
+
+__all__ = ['NormalData']
