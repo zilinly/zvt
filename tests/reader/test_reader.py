@@ -6,12 +6,12 @@ init_test_context()
 import time
 
 from zvt.api.rules import iterate_timestamps
-from zvt.domain import Stock1dKdata, Stock
+from zvt.schemas import Stock1dKdata, Stock
 
 from zvt.utils.time_utils import to_time_str
 
-from zvt.core.reader import DataReader
-from zvt.core import IntervalLevel
+from zvt.contract.reader import DataReader
+from zvt.contract import IntervalLevel
 
 
 def test_china_stock_reader():

@@ -3,7 +3,7 @@
 import pluggy
 
 from zvt import impls, zvt_env, specs
-from zvt.core.contract import zvt_schemas
+from zvt.contract import zvt_context
 
 
 def main():
@@ -34,7 +34,7 @@ class ZvtRunner:
 
         print(zvt_env)
 
-        for schema in zvt_schemas:
+        for schema in zvt_context.schemas:
             print(schema)
             if schema.__name__ == 'Coin':
                 schema.record_data()

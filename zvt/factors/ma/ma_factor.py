@@ -4,14 +4,14 @@ from typing import List, Union
 
 import pandas as pd
 
-from zvt.api import get_entities
 from zvt.api.common import get_ma_factor_schema
-from zvt.core import IntervalLevel, EntityMixin
-from zvt.domain import Stock
+from zvt.contract import IntervalLevel, EntityMixin
+from zvt.contract.api import get_entities
 from zvt.factors import Accumulator
 from zvt.factors.algorithm import MaTransformer, MaAndVolumeTransformer
 from zvt.factors.factor import Transformer
 from zvt.factors.technical_factor import TechnicalFactor
+from zvt.schemas import Stock
 from zvt.utils.time_utils import now_pd_timestamp
 
 
@@ -106,7 +106,7 @@ class ImprovedMaFactor(TechnicalFactor):
                  time_field: str = 'timestamp', computing_window: int = None, keep_all_timestamp: bool = False,
                  fill_method: str = 'ffill', effective_number: int = None,
                  accumulator: Accumulator = None, persist_factor: bool = False, dry_run: bool = False,
-                 windows=[250], vol_windows=[10,60]) -> None:
+                 windows=[250], vol_windows=[10, 60]) -> None:
         self.windows = windows
         self.vol_windows = vol_windows
 

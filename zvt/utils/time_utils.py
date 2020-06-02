@@ -6,7 +6,7 @@ import arrow
 import pandas as pd
 import tzlocal
 
-from zvt.core import IntervalLevel
+from zvt.contract import IntervalLevel
 
 CHINA_TZ = 'Asia/Shanghai'
 

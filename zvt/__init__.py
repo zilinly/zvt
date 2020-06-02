@@ -62,12 +62,6 @@ def init_env(zvt_home: str) -> None:
 
     zvt_env['zvt_home'] = zvt_home
     zvt_env['data_path'] = data_path
-    zvt_env['domain_module'] = 'zvt.domain'
-
-    # path for generate api
-    zvt_env['api_dir'] = os.path.join(data_path, 'api')
-    if not os.path.exists(zvt_env['api_dir']):
-        os.makedirs(zvt_env['api_dir'])
 
     # path for storing ui results
     zvt_env['ui_path'] = os.path.join(zvt_home, 'ui')
@@ -115,7 +109,7 @@ if os.getenv('TESTING_ZVT'):
 else:
     init_env(zvt_home=ZVT_HOME)
 
-import zvt.domain as domain
+import zvt.schemas as schemas
 import zvt.recorders as recorders
 
 import pluggy
@@ -123,4 +117,4 @@ import pluggy
 hookimpl = pluggy.HookimplMarker("zvt")
 """Marker to be imported and used in plugins (and for own implementations)"""
 
-__all__ = ['domain', 'recorders', 'zvt_env', 'init_log', 'init_env']
+__all__ = ['schemas', 'recorders', 'zvt_env', 'init_log', 'init_env']

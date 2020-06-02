@@ -6,12 +6,12 @@ from typing import List, Union
 
 import pandas as pd
 
-from zvt.core import IntervalLevel, Mixin, EntityMixin
-from zvt.core.api import get_data, df_to_db
-from zvt.core.normal_data import NormalData
-from zvt.core.reader import DataReader, DataListener
+from zvt.contract import IntervalLevel, Mixin, EntityMixin
+from zvt.contract.api import get_data, df_to_db
+from zvt.contract.normal_data import NormalData
+from zvt.contract.reader import DataReader, DataListener
 from zvt.utils.pd_utils import pd_is_not_null
-from zvt.domain import Stock
+from zvt.schemas import Stock
 from zvt.drawer.drawer import Drawer
 
 

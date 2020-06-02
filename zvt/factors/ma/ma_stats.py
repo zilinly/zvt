@@ -6,7 +6,7 @@ import pandas as pd
 
 from zvt.api import get_entities, Stock
 from zvt.api.common import get_ma_state_stats_schema
-from zvt.core import IntervalLevel, EntityMixin
+from zvt.contract import IntervalLevel, EntityMixin
 from zvt.factors.algorithm import MaTransformer
 from zvt.factors.factor import Accumulator, Transformer
 from zvt.factors.technical_factor import TechnicalFactor

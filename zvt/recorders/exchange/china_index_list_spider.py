@@ -6,11 +6,11 @@ import demjson
 import pandas as pd
 import requests
 
-from zvt.core.api import df_to_db
-from zvt.core.recorder import Recorder
+from zvt.contract.api import df_to_db
+from zvt.contract.recorder import Recorder
 from zvt.utils.time_utils import to_pd_timestamp, now_pd_timestamp
 from zvt.api.common import china_stock_code_to_id
-from zvt.domain import IndexStock, Index
+from zvt.schemas import IndexStock, Index
 
 
 class ChinaIndexListSpider(Recorder):

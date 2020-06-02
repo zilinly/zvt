@@ -3,7 +3,7 @@ from ..context import init_test_context
 
 init_test_context()
 
-from zvt.core import IntervalLevel
+from zvt.contract import IntervalLevel
 from zvt.api.rules import coin_finished_timestamp, iterate_timestamps, is_open_time, is_close_time, \
     is_in_finished_timestamps, is_in_trading, is_trading_date
 from zvt.utils.time_utils import is_same_time

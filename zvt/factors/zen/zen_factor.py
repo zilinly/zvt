@@ -3,7 +3,7 @@ import argparse
 from typing import List, Union
 
 import pandas as pd
-from zvt.core import IntervalLevel
+from zvt.contract import IntervalLevel
 from zvt.utils.pd_utils import pd_is_not_null
 from zvt.utils.time_utils import now_pd_timestamp
 

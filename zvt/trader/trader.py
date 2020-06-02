@@ -5,14 +5,14 @@ from typing import List, Union
 
 import pandas as pd
 
-from zvt.core import IntervalLevel, EntityMixin
-from zvt.core.contract import get_db_session
-from zvt.core.normal_data import NormalData
+from zvt.contract import IntervalLevel, EntityMixin
+from zvt.contract.api import get_db_session
+from zvt.contract.normal_data import NormalData
 from zvt.utils.time_utils import to_pd_timestamp, now_pd_timestamp
 from zvt.api.business import get_trader
 from zvt.api.common import get_one_day_trading_minutes
 from zvt.api.rules import iterate_timestamps, is_open_time, is_in_finished_timestamps, is_close_time, is_trading_date
-from zvt.domain import business, Stock
+from zvt.schemas import business, Stock
 from zvt.drawer.drawer import Drawer
 from zvt.factors.target_selector import TargetSelector
 from zvt.reader.business_reader import AccountReader

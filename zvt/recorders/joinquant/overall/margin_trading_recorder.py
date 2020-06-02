@@ -1,9 +1,9 @@
 from jqdatasdk import auth, query, finance
 
-from zvt.core.recorder import TimeSeriesDataRecorder
+from zvt.contract.recorder import TimeSeriesDataRecorder
 from zvt.utils.time_utils import to_time_str
 from zvt import zvt_env
-from zvt.domain import Index, MarginTradingSummary
+from zvt.schemas import Index, MarginTradingSummary
 
 # 聚宽编码
 # XSHG-上海证券交易所

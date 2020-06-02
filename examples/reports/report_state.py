@@ -8,8 +8,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from examples.reports import risky_company
 from zvt import init_log
-from zvt.core.api import get_entities, get_entity_code
-from zvt.domain import Stock1dKdata, Stock
+from zvt.contract.api import get_entities, get_entity_code
+from zvt.schemas import Stock1dKdata, Stock
 from zvt.factors import TargetSelector
 from zvt.factors.ma.ma_factor import ImprovedMaFactor
 from zvt.factors.ma.ma_stats import MaStateStatsFactor

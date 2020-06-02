@@ -5,8 +5,8 @@ from typing import List, Union
 
 import pandas as pd
 
-from zvt.core import IntervalLevel, Mixin, EntityMixin
-from zvt.domain import FinanceFactor, BalanceSheet, Stock
+from zvt.contract import IntervalLevel, Mixin, EntityMixin
+from zvt.schemas import FinanceFactor, BalanceSheet, Stock
 from zvt.factors import Transformer, Accumulator, FilterFactor
 from zvt.factors.factor import Factor
 

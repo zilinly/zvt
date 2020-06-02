@@ -1,11 +1,11 @@
 from jqdatasdk import auth, query, finance
 
-from zvt.core.recorder import TimeSeriesDataRecorder
+from zvt.contract.recorder import TimeSeriesDataRecorder
 from zvt.utils.time_utils import to_time_str
 from zvt.utils.utils import multiple_number
 from zvt import zvt_env
-from zvt.domain import Index
-from zvt.domain import StockSummary
+from zvt.schemas import Index
+from zvt.schemas import StockSummary
 
 # 聚宽编码
 # 322001	上海市场
