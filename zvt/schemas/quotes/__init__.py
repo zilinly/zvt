@@ -58,14 +58,6 @@ class EtfKdataCommon(KdataCommon):
     change_pct = Column(Float)
 
 
-class CoinKdataCommon(KdataCommon):
-    pass
-
-
-class CoinTickCommon(TickCommon):
-    pass
-
-
 class StockKdataCommon(KdataCommon):
     # 涨跌幅
     change_pct = Column(Float)
@@ -74,7 +66,6 @@ class StockKdataCommon(KdataCommon):
 
 
 from zvt.schemas.quotes.block import *
-from zvt.schemas.quotes.coin import *
 from zvt.schemas.quotes.stock import *
 from zvt.schemas.quotes.etf import *
 from zvt.schemas.quotes.index import *

@@ -8,6 +8,8 @@ import pandas as pd
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.orm import Session
 
+from . import zvt_context
+
 
 class IntervalLevel(enum.Enum):
     LEVEL_TICK = 'tick'
@@ -283,7 +285,5 @@ class NormalEntityMixin(EntityMixin):
     # the record updated time in db, some recorder would check it for whether need to refresh
     updated_timestamp = Column(DateTime)
 
-
-import zvt.contract.zvt_context as zvt_context
 
 __all__ = ['IntervalLevel', 'Mixin', 'NormalMixin', 'EntityMixin', 'NormalEntityMixin', 'zvt_context']
