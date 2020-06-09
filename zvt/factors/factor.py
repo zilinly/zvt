@@ -10,15 +10,21 @@ from zvt.contract import IntervalLevel, Mixin, EntityMixin
 from zvt.contract.api import get_data, df_to_db
 from zvt.contract.normal_data import NormalData
 from zvt.contract.reader import DataReader, DataListener
-from zvt.utils.pd_utils import pd_is_not_null
-from zvt.schemas import Stock
 from zvt.drawer.drawer import Drawer
+from zvt.schemas import Stock
+from zvt.utils.pd_utils import pd_is_not_null
 
 
-class Transformer(object):
-    logger = logging.getLogger(__name__)
+class Indicator(object):
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.indicators = []
 
-    indicator_cols = []
+
+class Transformer(Indicator):
+
+    def __init__(self) -> None:
+        super().__init__()
 
     def transform(self, input_df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -30,14 +36,14 @@ class Transformer(object):
         return input_df
 
 
-class Accumulator(object):
-    logger = logging.getLogger(__name__)
+class Accumulator(Indicator):
 
     def __init__(self, acc_window: int = 1) -> object:
         """
 
         :param acc_window: the window size of acc for computing,default is 1
         """
+        super().__init__()
         self.acc_window = acc_window
 
     def acc(self, input_df: pd.DataFrame, acc_df: pd.DataFrame) -> object:
@@ -51,7 +57,8 @@ class Accumulator(object):
 
 
 class Scorer(object):
-    logger = logging.getLogger(__name__)
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def score(self, input_df: pd.DataFrame) -> object:
         return input_df
@@ -303,8 +310,8 @@ class ScoreFactor(Factor):
     def do_compute(self):
         super().do_compute()
 
-        if pd_is_not_null(self.pipe_df) and self.scorer:
-            self.result_df = self.scorer.score(self.pipe_df)
+        if pd_is_not_null(self.factor_df) and self.scorer:
+            self.result_df = self.scorer.score(self.factor_df)
 
 
 class StateFactor(Factor):

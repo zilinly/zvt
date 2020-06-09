@@ -37,7 +37,7 @@ class TechnicalFactor(Factor):
         self.data_schema = get_kdata_schema(entity_schema.__name__, level=level)
 
         if transformer:
-            self.indicator_cols = transformer.indicator_cols
+            self.indicator_cols = transformer.indicators
 
         super().__init__(self.data_schema, entity_schema, provider, entity_provider, entity_ids, exchanges, codes,
                          the_timestamp, start_timestamp, end_timestamp, columns, filters, order, limit, level,

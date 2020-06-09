@@ -18,7 +18,7 @@ class MaTransformer(Transformer):
 
         for window in self.windows:
             col = 'ma{}'.format(window)
-            self.indicator_cols.append(col)
+            self.indicators.append(col)
 
             ma_df = input_df['close'].groupby(level=0).rolling(window=window, min_periods=window).mean()
             ma_df = ma_df.reset_index(level=0, drop=True)
@@ -35,7 +35,7 @@ class MaAndVolumeTransformer(Transformer):
     def transform(self, input_df) -> pd.DataFrame:
         for window in self.windows:
             col = 'ma{}'.format(window)
-            self.indicator_cols.append(col)
+            self.indicators.append(col)
 
             ma_df = input_df['close'].groupby(level=0).rolling(window=window, min_periods=window).mean()
             ma_df = ma_df.reset_index(level=0, drop=True)
@@ -43,7 +43,7 @@ class MaAndVolumeTransformer(Transformer):
 
         for vol_window in self.vol_windows:
             col = 'vol_ma{}'.format(vol_window)
-            self.indicator_cols.append(col)
+            self.indicators.append(col)
 
             vol_ma_df = input_df['volume'].groupby(level=0).rolling(window=vol_window, min_periods=vol_window).mean()
             vol_ma_df = vol_ma_df.reset_index(level=0, drop=True)
@@ -58,9 +58,9 @@ class MacdTransformer(Transformer):
         self.fast = fast
         self.n = n
 
-        self.indicator_cols.append('diff')
-        self.indicator_cols.append('dea')
-        self.indicator_cols.append('macd')
+        self.indicators.append('diff')
+        self.indicators.append('dea')
+        self.indicators.append('macd')
 
     def transform(self, input_df) -> pd.DataFrame:
         macd_df = input_df.groupby(level=0)['close'].apply(

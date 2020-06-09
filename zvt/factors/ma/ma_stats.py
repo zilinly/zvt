@@ -4,9 +4,10 @@ from typing import List, Union
 
 import pandas as pd
 
-from zvt.api import get_entities, Stock
+from zvt.api import Stock
 from zvt.api.common import get_ma_state_stats_schema
 from zvt.contract import IntervalLevel, EntityMixin
+from zvt.contract.api import get_entities
 from zvt.factors.algorithm import MaTransformer
 from zvt.factors.factor import Accumulator, Transformer
 from zvt.factors.technical_factor import TechnicalFactor
